@@ -1,24 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
+import { Routes, Navigate, Route } from 'react-router-dom';
+import { useContext } from 'react';
+import Root from './components/Root';
+import MedicineList from './components/MediciList';
+import Cart from './components/Cart';
+import AddForm from './components/AddForm';
+import Mcontext from './Store/Mcontext';
+import Login from './components/Login';
+import SignupForm from './components/SignUp';
+import NotFound from './components/NotFound';
+const App = () => {
+  const ctx = useContext(Mcontext);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+        <Root>
+          <Routes>
+            <Route path='/'
+              element={<Navigate to='/home'  />}
+            />
+               <Route path='/home' element={
+              <MedicineList/>
+            } />
+            <Route path='/AddMed' element={
+              <AddForm/>
+            } />
+            {ctx.isLoggedin && <Route path='/Login/Cart/:userId' element={
+                <Cart />}/>}
+            <Route path='/Login' element={
+              <Login />
+                } />
+            <Route path='/Signup' element={
+                <SignupForm />}
+                 />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Root>
+   
+    </>
+
   );
 }
 
